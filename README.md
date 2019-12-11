@@ -39,6 +39,11 @@ docker run \
 ralexsander/hg-git-migration migrate
 ```
 
+## Links
+
+Docker: https://hub.docker.com/ralexsander/hg-git-migration  
+Github: https://github.com/ralexsander/docker-hg-git-migration
+
 ## Motivations
 
 BitBucket stop supporting mercurial repositories, so I need a way to make sure all repositories was migrated the same way.
