@@ -15,8 +15,8 @@ docker run \
 ralexsander/hg-git-migration [prepare,migrate,bash]
 ```
 
-```prepare``` - Creates the map files for sanitization of branches, tags and authors names.
-```migrate``` - Perform the migration
+```prepare``` - Creates the map files for sanitization of branches, tags and authors names.  
+```migrate``` - Perform the migration  
 ```bash``` - Shell access to container
 
 Example, first run (if you don't need to sanitize the repository, you can skip this step):
