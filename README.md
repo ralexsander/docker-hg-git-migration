@@ -41,7 +41,7 @@ ralexsander/hg-git-migration migrate
 
 ## Links
 
-Docker: https://hub.docker.com/ralexsander/hg-git-migration  
+Docker: https://hub.docker.com/r/ralexsander/hg-git-migration  
 Github: https://github.com/ralexsander/docker-hg-git-migration
 
 ## Motivations
