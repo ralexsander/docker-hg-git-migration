@@ -7,39 +7,39 @@ export HGENCODING=utf8
 
 if [[ "$1" == prepare ]]; then
 
-  rm -rf /hg-repositories/{,tmp.}hg.authors.list
-  rm -rf /hg-repositories/*.hg.branches.list
-  rm -rf /hg-repositories/*.hg.tags.list
+  rm -rf /hg-repositories/{,tmp.}hg.authors.map
+  rm -rf /hg-repositories/*.hg.branches.map
+  rm -rf /hg-repositories/*.hg.tags.map
 
   for hg_repo in /hg-repositories/*/ ; do
     echo "Preparing: $hg_repo"
     cd $hg_repo
-    hg log | grep user: | sed 's/user: *//' >> /hg-repositories/tmp.hg.authors.list
+    hg log | grep user: | sed 's/user: *//' >> /hg-repositories/tmp.hg.authors.map
 
     # Branches list
-    hg branches -c | awk '{print $1}' | sort > ../${PWD##*/}.tmp.hg.branches.list
+    hg branches -c | awk '{print $1}' | sort > ../${PWD##*/}.tmp.hg.branches.map
     while read -r line
     do
-      echo "\"$line\"=\"$line\"" >> ../${PWD##*/}.hg.branches.list
-    done < ../${PWD##*/}.tmp.hg.branches.list
-    rm ../${PWD##*/}.tmp.hg.branches.list
+      echo "\"$line\"=\"$line\"" >> ../${PWD##*/}.hg.branches.map
+    done < ../${PWD##*/}.tmp.hg.branches.map
+    rm ../${PWD##*/}.tmp.hg.branches.map
 
     # Tags list
-    hg tags | awk '{print $1}' | sort > ../${PWD##*/}.tmp.hg.tags.list
+    hg tags | awk '{print $1}' | sort > ../${PWD##*/}.tmp.hg.tags.map
     while read -r line
     do
-      echo "\"$line\"=\"$line\"" >> ../${PWD##*/}.hg.tags.list
-    done < ../${PWD##*/}.tmp.hg.tags.list
-    rm ../${PWD##*/}.tmp.hg.tags.list
+      echo "\"$line\"=\"$line\"" >> ../${PWD##*/}.hg.tags.map
+    done < ../${PWD##*/}.tmp.hg.tags.map
+    rm ../${PWD##*/}.tmp.hg.tags.map
 
   done
 
-  sort -u -o /hg-repositories/tmp.hg.authors.list /hg-repositories/tmp.hg.authors.list
+  sort -u -o /hg-repositories/tmp.hg.authors.map /hg-repositories/tmp.hg.authors.map
   while read -r line
   do
-    echo "\"$line\"=\"$line\"" >> /hg-repositories/hg.authors.list
-  done < /hg-repositories/tmp.hg.authors.list | sort | uniq
-  rm /hg-repositories/tmp.hg.authors.list
+    echo "\"$line\"=\"$line\"" >> /hg-repositories/hg.authors.map
+  done < /hg-repositories/tmp.hg.authors.map | sort | uniq
+  rm /hg-repositories/tmp.hg.authors.map
 
   exit 0
 fi;
@@ -55,18 +55,18 @@ if [[ "$1" == migrate ]]; then
     PARAM=
 
     # Tags param
-    if [ -s ../${PROJECT_NAME}.hg.tags.list ]; then
-      PARAM="-T /hg-repositories/${PROJECT_NAME}.hg.tags.list"
+    if [ -s ../${PROJECT_NAME}.hg.tags.map ]; then
+      PARAM="-T /hg-repositories/${PROJECT_NAME}.hg.tags.map"
     fi;
 
     # Branches param
-    if [ -s ../${PROJECT_NAME}.hg.branches.list ]; then
-      PARAM="$PARAM -B /hg-repositories/${PROJECT_NAME}.hg.branches.list"
+    if [ -s ../${PROJECT_NAME}.hg.branches.map ]; then
+      PARAM="$PARAM -B /hg-repositories/${PROJECT_NAME}.hg.branches.map"
     fi;
 
     # Authors param
-    if [ -s /hg-repositories/hg.authors.list ]; then
-      PARAM="$PARAM -A /hg-repositories/hg.authors.list"
+    if [ -s /hg-repositories/hg.authors.map ]; then
+      PARAM="$PARAM -A /hg-repositories/hg.authors.map"
     fi;
 
     rm -rf /git-repositories/$PROJECT_NAME
@@ -104,8 +104,8 @@ fi;
 
 echo ""
 echo "usage: docker run \\"
-echo "--volume /your/hg/repositories/path/:/hg-repositories \\"
-echo "--volume /your/empty/output/folder/:/git-repositories \\"
+echo "--volume [/your/hg/repositories/path/]:/hg-repositories \\"
+echo "--volume [/your/empty/output/folder/]:/git-repositories \\"
 echo "ralexsander/hg-git-migration [prepare,migrate,bash] "
 echo ""
 echo "Options available are:";
